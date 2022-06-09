@@ -1,0 +1,26 @@
+{
+  "name": "@pdftron/webviewer-media-server",
+  "version": "0.0.1",
+  "description": "This is a demo server to use with @pdftron/webviewer-video and @pdftron/webviewer-audio",
+  "main": "index.js",
+  "author": "PDFTron Systems Inc.",
+  "license": "ISC",
+  "scripts": {
+    "release-patch": "npm version patch && npm publish --access public",
+    "release-minor": "npm version minor && npm publish --access public",
+    "release-major": "npm version major && npm publish --access public",
+    "postpublish": "git push"
+  },
+  "dependencies": {
+    "@hapi/boom": "^9.1.4",
+    "@hapi/hapi": "^20.2.1",
+    "@hapi/joi": "^17.1.1",
+    "await-spawn": "^4.0.2",
+    "aws-sdk": "^2.1095.0",
+    "child_process": "^1.0.2",
+    "fs": "0.0.1-security",
+    "node-fetch": "^3.2.3",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {}
+}

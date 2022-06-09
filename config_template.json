@@ -1,0 +1,6 @@
+{
+  "port": 3001,
+  "host": "localhost",
+  "aws_key": "test",
+  "aws_secret": "test_secret"
+}
