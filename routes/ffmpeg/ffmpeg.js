@@ -41,7 +41,11 @@ module.exports = ({
         },
       });
 
-      return fs.readFileSync(`./tmp/${uuid}.mp3`);
+      return new Promise((resolve) => {
+        fs.readFile(`./tmp/${uuid}.mp3`, (err, data) => {
+          resolve(data);
+        });
+      });
     }
   });
 
@@ -78,7 +82,11 @@ module.exports = ({
         },
       });
 
-      return fs.readFileSync(`./tmp/${uuid}.mp4`);
+      return new Promise((resolve) => {
+        fs.readFile(`./tmp/${uuid}.mp4`, (err, data) => {
+          resolve(data);
+        });
+      });
     }
   });
 };
