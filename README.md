@@ -27,6 +27,7 @@ import WebViewer from '@pdftron/webviewer';
 import { initializeVideoViewer } from '@pdftron/webviewer-video';
 WebViewer({
     path: '/webviewer/lib',
+    enableRedaction: true,
   },
   viewer.current,
 ).then(async instance => {
@@ -38,7 +39,7 @@ WebViewer({
       instance,
       {
         license: '---- Insert commercial license key here after purchase ----',
-        `---- Other settings ----`,
+        enableRedaction: true,
       }
   );
   // Load a video at a specific url. Can be a local or public link
