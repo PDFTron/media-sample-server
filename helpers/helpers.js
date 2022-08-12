@@ -19,7 +19,7 @@ const generateAudioRedactCommand = (url, intervals, uuid) => {
   ];
 };
 
-const generateVideoRedactCommand = (url, intervals, uuid) => {
+const generateVideoRedactCommand = (url, intervals, uuid, audioUUID) => {
   let args = [];
   let canvasArgs = '';
   
@@ -38,11 +38,12 @@ const generateVideoRedactCommand = (url, intervals, uuid) => {
   });
   
   args.push(canvasArgs, '-preset', 'fast', '-map', '[tmp]', '-map', '1:a:0');
+
   return [
     '-i',
     url,
     '-i',
-    url,
+    audioUUID ? `./tmp/${audioUUID}.mp3` : url,
     ...args,
     `./tmp/${uuid}.mp4`,
   ];

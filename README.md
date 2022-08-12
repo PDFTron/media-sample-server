@@ -50,18 +50,29 @@ WebViewer({
 
   UI.updateElement('redactVideoButton', {
     onClick: async redactAnnotations => {
-      const { data: videoBuffer } = await axios.post('http://YOUR_SERVER_HERE/video/redact', {
-        intervals: redactAnnotations.map(annotation => ({
-          start: annotation.startTime,
-          end: annotation.endTime,
-        })),
-        url: 'https://pdftron.s3.amazonaws.com/downloads/pl/video/video.mp4',
-      }, {
-        responseType: 'arraybuffer'
+      console.log(redactAnnotations);
+
+      const response = await fetch('http://localhost:3001/video/redact', {
+        method: 'POST',
+        body: JSON.stringify({
+          intervals: redactAnnotations.map(annotation => ({
+            start: annotation.startTime,
+            end: annotation.endTime,
+            shouldRedactAudio: annotation.shouldRedactAudio || annotation.redactionType === 'audioRedaction',
+            shouldRedactVideo: annotation.redactionType !== 'audioRedaction',
+          })),
+          url: 'https://pdftron.s3.amazonaws.com/downloads/pl/video/video.mp4',
+        }),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
       });
 
+      const videoBuffer = await response.arrayBuffer();
+
       const newVideoBlob = new Blob([videoBuffer], { type: 'video/mp4' });
-      videoInstance.loadVideo(URL.createObjectURL(newVideoBlob));
+      loadVideo(URL.createObjectURL(newVideoBlob));
       return videoBuffer;
     }
   });

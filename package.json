@@ -1,10 +1,13 @@
 {
   "name": "@pdftron/webviewer-media-server",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "This is a demo server to use with @pdftron/webviewer-video and @pdftron/webviewer-audio",
   "main": "index.js",
   "author": "PDFTron Systems Inc.",
   "license": "ISC",
+  "scripts": {
+    "start": "node ./index.js"
+  },
   "dependencies": {
     "@hapi/boom": "^9.1.4",
     "@hapi/hapi": "^20.2.1",
