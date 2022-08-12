@@ -20,7 +20,8 @@ Before you begin, make sure your development environment includes [Node.js](http
 
 Below is an example of how to use the server with WebViewer Video. Sample code of how WebViewer-Video could be integrated into your application can be found [here](https://github.com/pdftron/WebViewer-video-sample).
 
-For further information on integrating the server with your application, please check this [link](https://www.pdftron.com/documentation/web/guides/video/server-component/).
+For further information on integrating the server with your application, please check this [link](https://www.pdftron.com/documentation/web/guides/video/video-redaction/) or 
+[link](https://www.pdftron.com/documentation/web/guides/audio/audio-redaction/).
 
 ```javascript
 import WebViewer from '@pdftron/webviewer';
