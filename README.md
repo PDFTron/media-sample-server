@@ -45,14 +45,11 @@ WebViewer({
   // Load a video at a specific url. Can be a local or public link
   // If local it needs to be relative to lib/ui/index.html.
   // Or at the root. (eg '/video.mp4')
-  // Dash file url
   const videoUrl = 'https://pdftron.s3.amazonaws.com/downloads/pl/video/video.mp4';
   loadVideo(videoUrl);
 
   UI.updateElement('redactVideoButton', {
     onClick: async redactAnnotations => {
-      console.log(redactAnnotations);
-
       const response = await fetch('http://localhost:3001/video/redact', {
         method: 'POST',
         body: JSON.stringify({
