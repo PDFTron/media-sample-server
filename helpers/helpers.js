@@ -49,7 +49,24 @@ const generateVideoRedactCommand = (url, intervals, uuid, audioUUID) => {
   ];
 };
 
+const generateVideoReplaceAudioStreamCommand = (videoUrl, videoUUID, audioUUID) => {
+  return [
+    '-i',
+    videoUrl,
+    '-i',
+    `./tmp/${audioUUID}.mp3`,
+    '-c:v',
+    'copy',
+    '-map',
+    '0:v:0',
+    '-map',
+    '1:a:0',
+    `./tmp/${videoUUID}.mp4`,
+  ];
+}
+
 module.exports = {
   generateAudioRedactCommand,
   generateVideoRedactCommand,
+  generateVideoReplaceAudioStreamCommand,
 }

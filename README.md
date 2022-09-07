@@ -11,6 +11,8 @@ The Media Sample Server allows for utilization of [ffmpeg](https://ffmpeg.org/) 
 
 Before you begin, make sure your development environment includes [Node.js](https://nodejs.org/en/), [npm](https://www.npmjs.com/get-npm) and [ffmpeg](https://ffmpeg.org/download.html).
 
+If you wish to use s3 with your server, make sure to up date the `aws_key` and `aws_secret` values in the `config.json`.
+
 ## Commands
 
 - `npm i` - Installs the pre-requisites required to run the server
@@ -45,10 +47,10 @@ WebViewer({
   // Load a video at a specific url. Can be a local or public link
   // If local it needs to be relative to lib/ui/index.html.
   // Or at the root. (eg '/video.mp4')
-  const videoUrl = 'https://pdftron.s3.amazonaws.com/downloads/pl/video/video.mp4';
-  loadVideo(videoUrl);
+  let currentVideoUrl = 'https://pdftron.s3.amazonaws.com/downloads/pl/video/video.mp4';
+  loadVideo(currentVideoUrl);
 
-  UI.updateElement('redactVideoButton', {
+  UI.updateElement('redactApplyButton', {
     onClick: async redactAnnotations => {
       const response = await fetch('http://localhost:3001/video/redact', {
         method: 'POST',
@@ -59,7 +61,7 @@ WebViewer({
             shouldRedactAudio: annotation.shouldRedactAudio || annotation.redactionType === 'audioRedaction',
             shouldRedactVideo: annotation.redactionType !== 'audioRedaction',
           })),
-          url: 'https://pdftron.s3.amazonaws.com/downloads/pl/video/video.mp4',
+          url: currentVideoUrl,
         }),
         headers: {
           'Accept': 'application/json',
@@ -69,9 +71,9 @@ WebViewer({
 
       const videoBuffer = await response.arrayBuffer();
 
-      const newVideoBlob = new Blob([videoBuffer], { type: 'video/mp4' });
-      loadVideo(URL.createObjectURL(newVideoBlob));
-      return videoBuffer;
+      currentVideoUrl = await response.text();
+      videoInstance.loadVideo(currentVideoUrl);
+      return currentVideoUrl;
     }
   });
 });

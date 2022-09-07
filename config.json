@@ -1,4 +1,7 @@
 {
   "port": 3001,
-  "host": "localhost"
+  "host": "localhost",
+  "aws_key": "AKIAWQUIP54IZW6YMUP3",
+  "aws_secret": "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",
+  "env": "local"
 }

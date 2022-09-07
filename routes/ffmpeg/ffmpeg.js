@@ -1,7 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 
 module.exports = ({
-  server, Joi, Boom, helpers, fs, cmd,
+  server, Joi, Boom, helpers, fs, cmd, s3,
 }) => {
   const intervalSchema = Joi.object({
     start: Joi.number().min(0).required(),
@@ -94,12 +94,15 @@ module.exports = ({
         });
       }
 
-      const redactCommand = helpers.generateVideoRedactCommand(
-        url,
-        intervals.filter(interval => interval.shouldRedactVideo),
-        uuid,
-        audioRedactionIntervals.length ? audioUUID : null,
-      );
+      const videoRedactionIntervals = intervals.filter(interval => interval.shouldRedactVideo);
+
+      const redactCommand = videoRedactionIntervals.length ? 
+        helpers.generateVideoRedactCommand(
+          url,
+          videoRedactionIntervals,
+          uuid,
+          audioRedactionIntervals.length ? audioUUID : null,
+        ) : helpers.generateVideoReplaceAudioStreamCommand(url, uuid, audioUUID);
 
       await cmd({
         cmd: 'ffmpeg', 
