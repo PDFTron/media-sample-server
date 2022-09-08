@@ -11,7 +11,7 @@ The Media Sample Server allows for utilization of [ffmpeg](https://ffmpeg.org/) 
 
 Before you begin, make sure your development environment includes [Node.js](https://nodejs.org/en/), [npm](https://www.npmjs.com/get-npm) and [ffmpeg](https://ffmpeg.org/download.html).
 
-If you wish to use s3 with your server, make sure to up date the `aws_key` and `aws_secret` values in the `config.json`.
+If you wish to use s3 with your server, make sure to update the `aws_key` and `aws_secret` values in the `config.json`.
 
 ## Commands
 
