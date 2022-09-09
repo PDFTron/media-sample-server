@@ -1,11 +1,18 @@
 const { v4: uuidv4 } = require('uuid');
 
 module.exports = ({
-  server, Joi, Boom, helpers, fs, cmd,
+  server, Joi, Boom, helpers, fs, cmd, s3,
 }) => {
   const intervalSchema = Joi.object({
     start: Joi.number().min(0).required(),
     end: Joi.number().required(),
+  });
+
+  const videoRedactIntervalSchema = Joi.object({
+    start: Joi.number().min(0).required(),
+    end: Joi.number().required(),
+    shouldRedactAudio: Joi.boolean(),
+    shouldRedactVideo: Joi.boolean(),
   });
 
   server.route({
@@ -56,7 +63,7 @@ module.exports = ({
       validate: {
         payload: {
           url: Joi.string().required(),
-          intervals: Joi.array().items(intervalSchema).required(),
+          intervals: Joi.array().items(videoRedactIntervalSchema).required(),
         },
         failAction: (request, h, err) => {
           return Boom.badRequest(err);
@@ -72,7 +79,30 @@ module.exports = ({
       } = request;
       
       const uuid = uuidv4();
-      const redactCommand = helpers.generateVideoRedactCommand(url, intervals, uuid);
+      const audioUUID = uuidv4();
+      const audioRedactionIntervals = intervals.filter(interval => interval.shouldRedactAudio);
+
+      if (audioRedactionIntervals.length) {
+        const audioRedactCommand = helpers.generateAudioRedactCommand(url, audioRedactionIntervals, audioUUID);
+
+        await cmd({
+          cmd: 'ffmpeg', 
+          args: audioRedactCommand,
+          onError: (err) => {
+            console.log(err);
+          },
+        });
+      }
+
+      const videoRedactionIntervals = intervals.filter(interval => interval.shouldRedactVideo);
+
+      const redactCommand = videoRedactionIntervals.length ? 
+        helpers.generateVideoRedactCommand(
+          url,
+          videoRedactionIntervals,
+          uuid,
+          audioRedactionIntervals.length ? audioUUID : null,
+        ) : helpers.generateVideoReplaceAudioStreamCommand(url, uuid, audioUUID);
 
       await cmd({
         cmd: 'ffmpeg', 

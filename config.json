@@ -1,4 +1,7 @@
 {
   "port": 3001,
-  "host": "localhost"
+  "host": "localhost",
+  "aws_key": "your aws key here",
+  "aws_secret": "your aws secret here",
+  "env": "local"
 }

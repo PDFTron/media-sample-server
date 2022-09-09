@@ -5,6 +5,7 @@ const config = require('./config.json');
 const routes = require('./routes');
 const cmd = require('./helpers/runCommand');
 const helpers = require('./helpers/helpers');
+const s3 = require('./helpers/s3');
 const fs = require('fs');
 
 const init = async () => {
@@ -35,6 +36,7 @@ const init = async () => {
     fs,
     cmd,
     helpers,
+    s3,
   });
 };
 

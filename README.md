@@ -11,6 +11,8 @@ The Media Sample Server allows for utilization of [ffmpeg](https://ffmpeg.org/) 
 
 Before you begin, make sure your development environment includes [Node.js](https://nodejs.org/en/), [npm](https://www.npmjs.com/get-npm) and [ffmpeg](https://ffmpeg.org/download.html).
 
+If you wish to use s3 with your server, make sure to update the `aws_key` and `aws_secret` values in the `config.json`.
+
 ## Commands
 
 - `npm i` - Installs the pre-requisites required to run the server
@@ -20,7 +22,8 @@ Before you begin, make sure your development environment includes [Node.js](http
 
 Below is an example of how to use the server with WebViewer Video. Sample code of how WebViewer-Video could be integrated into your application can be found [here](https://github.com/pdftron/WebViewer-video-sample).
 
-For further information on integrating the server with your application, please check this [link](https://www.pdftron.com/documentation/web/guides/video/server-component/).
+For further information on integrating the server with your application, please check this [link](https://www.pdftron.com/documentation/web/guides/video/video-redaction/) or 
+[link](https://www.pdftron.com/documentation/web/guides/audio/audio-redaction/).
 
 ```javascript
 import WebViewer from '@pdftron/webviewer';
@@ -45,25 +48,33 @@ WebViewer({
   // Load a video at a specific url. Can be a local or public link
   // If local it needs to be relative to lib/ui/index.html.
   // Or at the root. (eg '/video.mp4')
-  // Dash file url
-  const videoUrl = 'https://pdftron.s3.amazonaws.com/downloads/pl/video/video.mp4';
-  loadVideo(videoUrl);
+  let currentVideoUrl = 'https://pdftron.s3.amazonaws.com/downloads/pl/video/video.mp4';
+  loadVideo(currentVideoUrl);
 
-  UI.updateElement('redactVideoButton', {
+  UI.updateElement('redactApplyButton', {
     onClick: async redactAnnotations => {
-      const { data: videoBuffer } = await axios.post('http://YOUR_SERVER_HERE/video/redact', {
-        intervals: redactAnnotations.map(annotation => ({
-          start: annotation.startTime,
-          end: annotation.endTime,
-        })),
-        url: 'https://pdftron.s3.amazonaws.com/downloads/pl/video/video.mp4',
-      }, {
-        responseType: 'arraybuffer'
+      const response = await fetch('http://localhost:3001/video/redact', {
+        method: 'POST',
+        body: JSON.stringify({
+          intervals: redactAnnotations.map(annotation => ({
+            start: annotation.startTime,
+            end: annotation.endTime,
+            shouldRedactAudio: annotation.shouldRedactAudio || annotation.redactionType === 'audioRedaction',
+            shouldRedactVideo: annotation.redactionType !== 'audioRedaction',
+          })),
+          url: currentVideoUrl,
+        }),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
       });
 
-      const newVideoBlob = new Blob([videoBuffer], { type: 'video/mp4' });
-      videoInstance.loadVideo(URL.createObjectURL(newVideoBlob));
-      return videoBuffer;
+      const videoBuffer = await response.arrayBuffer();
+
+      currentVideoUrl = await response.text();
+      videoInstance.loadVideo(currentVideoUrl);
+      return currentVideoUrl;
     }
   });
 });
