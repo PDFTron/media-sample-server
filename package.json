@@ -1,12 +1,16 @@
 {
-  "name": "@pdftron/webviewer-media-server",
+  "name": "@pdftron/media-sample-server",
   "version": "1.0.0",
   "description": "This is a demo server to use with @pdftron/webviewer-video and @pdftron/webviewer-audio",
   "main": "index.js",
   "author": "PDFTron Systems Inc.",
   "license": "ISC",
+  "files": ["*/*"],
   "scripts": {
-    "start": "node ./index.js"
+    "start": "node ./index.js",
+    "release-patch": "npm version patch && npm publish --access public",
+    "release-minor": "npm version minor && npm publish --access public",
+    "release-major": "npm version major && npm publish --access public"
   },
   "dependencies": {
     "@hapi/boom": "^9.1.4",
@@ -19,5 +23,27 @@
     "node-fetch": "^3.2.3",
     "uuid": "^8.3.2"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PDFTron/media-sample-server.git"
+  },
+  "keywords": [
+    "video",
+    "annotation",
+    "tool",
+    "annotating",
+    "frame",
+    "annotations",
+    "frame",
+    "annotating",
+    "collaboration",
+    "webviewer",
+    "audio",
+    "redaction"
+  ],
+  "bugs": {
+    "url": "https://github.com/PDFTron/media-sample-server/issues"
+  },
+  "homepage": "https://github.com/PDFTron/media-sample-server#readme"
 }
