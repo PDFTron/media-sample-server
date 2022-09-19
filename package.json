@@ -5,7 +5,6 @@
   "main": "index.js",
   "author": "PDFTron Systems Inc.",
   "license": "ISC",
-  "files": ["*/*"],
   "scripts": {
     "start": "node ./index.js",
     "release-patch": "npm version patch && npm publish --access public",
