@@ -1,6 +1,6 @@
 {
   "name": "@pdftron/media-sample-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This is a demo server to use with @pdftron/webviewer-video and @pdftron/webviewer-audio",
   "main": "index.js",
   "author": "PDFTron Systems Inc.",
