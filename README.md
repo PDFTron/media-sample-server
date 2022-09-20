@@ -22,7 +22,7 @@ If you wish to use s3 with your server, make sure to update the `aws_key` and `a
 
 Below is an example of how to use the server with WebViewer Video. Sample code of how WebViewer-Video could be integrated into your application can be found [here](https://github.com/pdftron/WebViewer-video-sample).
 
-For further information on integrating the server with your application, please check this [link](https://www.pdftron.com/documentation/web/guides/video/video-redaction/) or 
+For further information on integrating the server with your application, please check this [link](https://www.pdftron.com/documentation/web/guides/video/video-redaction/) or
 [link](https://www.pdftron.com/documentation/web/guides/audio/audio-redaction/).
 
 ```javascript
@@ -57,8 +57,8 @@ WebViewer({
         method: 'POST',
         body: JSON.stringify({
           intervals: redactAnnotations.map(annotation => ({
-            start: annotation.startTime,
-            end: annotation.endTime,
+            start: annotation.getStartTime(),
+            end: annotation.getEndTime(),
             shouldRedactAudio: annotation.shouldRedactAudio || annotation.redactionType === 'audioRedaction',
             shouldRedactVideo: annotation.redactionType !== 'audioRedaction',
           })),
